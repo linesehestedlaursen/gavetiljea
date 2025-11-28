@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gave til dig 💛</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* Basic layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fff7ff, #ffd6ff);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+      transition: opacity 1s ease;
+    }
+
+    /* PRANK screen */
+    #prankScreen {
+      background: transparent;
+      z-index: 2;
+    }
+
+    .prank-text {
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      animation:
+        rainbow 1.2s linear infinite,
+        pop 0.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes rainbow {
+      0% { color: #ff0040; }
+      16% { color: #ff7b00; }
+      32% { color: #ffee00; }
+      48% { color: #32ff00; }
+      64% { color: #00c3ff; }
+      80% { color: #7a00ff; }
+      100% { color: #ff00c8; }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); text-shadow: 0 0 5px rgba(0,0,0,0.2); }
+      100% { transform: scale(1.08); text-shadow: 0 0 20px rgba(0,0,0,0.4); }
+    }
+
+    .fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Gift screen */
+    #giftScreen {
+      background: transparent;
+      z-index: 1;
+      opacity: 0;
+      display: none; /* bliver slået til med JS */
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    #giftScreen.fade-in {
+      opacity: 1;
+    }
+
+    .intro-text {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800;
+      color: #333;
+      text-transform: uppercase;
+    }
+
+    .ferry {
+      font-size: clamp(3rem, 10vw, 5rem);
+      opacity: 0;
+      transform: translateX(-120%);
+    }
+
+    .ferry.sail-in {
+      animation: sailIn 1.4s ease-out forwards;
+    }
+
+    @keyframes sailIn {
+      0% {
+        transform: translateX(-120%);
+        opacity: 0;
+      }
+      60% {
+        transform: translateX(10%);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    #osloText {
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      font-weight: 900;
+      color: #1a1a1a;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    #osloText.show {
+      animation: fadeUp 1s ease-out forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Første skærm: PRANK -->
+  <div id="prankScreen" class="screen">
+    <div class="prank-text">PRANK!!!</div>
+  </div>
+
+  <!-- Anden skærm: Den rigtige gave -->
+  <div id="giftScreen" class="screen">
+    <div class="intro-text">VI SKAL EN TUR TIL....</div>
+
+    <!-- Færge + norsk flag + bølger -->
+    <div class="ferry" id="ferry">
+      🚢 🇳🇴 🌊
+    </div>
+
+    <div id="osloText">OSLO</div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const prankScreen = document.getElementById("prankScreen");
+      const giftScreen = document.getElementById("giftScreen");
+      const ferry = document.getElementById("ferry");
+      const osloText = document.getElementById("osloText");
+
+      // Efter 5 sekunder: fade PRANK væk
+      setTimeout(() => {
+        prankScreen.classList.add("fade-out");
+
+        // Vent på fade-out animation (1s), skift så til gave-skærm
+        setTimeout(() => {
+          prankScreen.style.display = "none";
+          giftScreen.style.display = "flex";
+
+          requestAnimationFrame(() => {
+            giftScreen.classList.add("fade-in");
+          });
+
+          // Efter 1,3 sekunder: færgen + flag + bølger sejler ind
+          setTimeout(() => {
+            ferry.classList.add("sail-in");
+          }, 1300);
+
+          // Efter 2,7 sekunder: "OSLO" dukker op
+          setTimeout(() => {
+            osloText.classList.add("show");
+          }, 2700);
+        }, 1000);
+      }, 5000); // 5 sekunder
+    });
+  </script>
+</body>
+</html>
