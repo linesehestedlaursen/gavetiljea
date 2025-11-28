@@ -109,6 +109,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Confetti squares */
     .confetti {
       position: absolute;
       top: -10px;
@@ -118,6 +119,7 @@
       animation: fall linear forwards;
     }
 
+    /* Emoji-style confetti */
     .emoji-confetti {
       position: absolute;
       top: -10px;
@@ -142,7 +144,7 @@
 </head>
 <body>
 
-  <!-- Hidden sound -->
+  <!-- Hidden tada sound -->
   <audio id="tadaaSound">
     <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
     <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.mp3" type="audio/mpeg">
@@ -183,4 +185,41 @@
             ferry.classList.add("sail-in");
           }, 1300);
 
-          setTimeout((
+          setTimeout(() => {
+            osloText.classList.add("show");
+            tadaa.play();       // PLAY THE SOUND 🎉
+            launchConfetti();  // CONFETTI TIME!
+          }, 2700);
+
+        }, 1000);
+      }, 5000);
+
+      function launchConfetti() {
+        const colors = ["#ff0040", "#ff7b00", "#ffee00", "#32ff00", "#00c3ff", "#7a00ff", "#ff00c8"];
+        const emojiFlags = ["🇩🇰", "🇳🇴"];
+
+        for (let i = 0; i < 100; i++) {
+          if (Math.random() < 0.25) {
+            let emo = document.createElement("div");
+            emo.classList.add("emoji-confetti");
+            emo.textContent = emojiFlags[Math.floor(Math.random() * emojiFlags.length)];
+            emo.style.left = Math.random() * 100 + "vw";
+            emo.style.animationDuration = 2 + Math.random() * 3 + "s";
+            document.body.appendChild(emo);
+            setTimeout(() => emo.remove(), 6000);
+          } else {
+            let conf = document.createElement("div");
+            conf.classList.add("confetti");
+            conf.style.left = Math.random() * 100 + "vw";
+            conf.style.animationDuration = 2 + Math.random() * 3 + "s";
+            conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(conf);
+            setTimeout(() => conf.remove(), 6000);
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
